@@ -15,18 +15,17 @@ void statistics_init(void)
 
 void count_address(void)
 {
-    /*TODO: Implementar contador total_addresses*/
+    total_addresses++;
 }
 
 void count_page_fault(void)
 {
-    /*TODO: Implementar contador page_faults*/
+    page_faults++;
 }
 
 void count_tlb_hit(void)
 {
-    
-    /*TODO: Implementar contador tlb_hits*/
+    tlb_hits++;
 }
 
 int get_total_addresses(void)
@@ -49,9 +48,13 @@ void print_statistics(void)
     double page_fault_rate = 0.0;
     double tlb_hit_rate = 0.0;
 
-    /*
-     * TODO: Implementar cálculo do page_fault_rate e tlb_hit_rate
-    */
+    if (total_addresses > 0) {
+        page_fault_rate =
+            (double) page_faults / total_addresses;
+
+        tlb_hit_rate =
+            (double) tlb_hits / total_addresses;
+    }
 
     printf("Number of Translated Addresses = %d\n", total_addresses);
     printf("Page Faults = %d\n", page_faults);

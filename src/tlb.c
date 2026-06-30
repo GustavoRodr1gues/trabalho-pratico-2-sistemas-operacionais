@@ -41,17 +41,12 @@ void tlb_insert(int page, int frame)
         }
     }
 
-    /* Procura uma entrada livre */
-    for (int i = 0; i < TLB_SIZE; i++) {
-        if (!tlb[i].valid) {
-            tlb[i].page = page;
-            tlb[i].frame = frame;
-            tlb[i].valid = 1;
-            return;
-        }
-    }
-
-    /* TLB cheio: substituição FIFO */
+    /*
+     * Insere sempre na posição apontada por fifo_next, esteja ela
+     * livre (nunca usada) ou ocupada (substituição). Isso garante que
+     * a ordem de saída sempre reflita a ordem de entrada, mesmo quando
+     * tlb_remove() libera slots no meio do array.
+     */
     tlb[fifo_next].page = page;
     tlb[fifo_next].frame = frame;
     tlb[fifo_next].valid = 1;
